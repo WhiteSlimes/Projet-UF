@@ -1,3 +1,18 @@
+<?php
+
+$servername = "localhost";
+$dbname = "id9838746_kujaku";
+$username = "id9838746_kujaku";
+$password = "kujaku";
+
+try {
+    $bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=UTF8", $username, $password);
+    // set the PDO error mode to exception
+    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {echo "Connection failed: " . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,26 +81,24 @@
                     </div>
                     <div class="col-md-6">
                         <h3>QUI SUIS-JE ?</h3>
-                        <p>Je m'appelle Alexis Papon, je suis né à Paris le 5 janvier 1999. Je suis passionné d'informatique depuis tout jeune ayant l'habitude de regarder mon père faire. J'ai aujourd'hui rejoint une école qui me permet d'apprendre sur quelque chose qui me passionne.</p>
+                        <?php
+                            $req = $bdd->query("SELECT * FROM moi");
+                            $infos = $req->fetchAll();
+                            foreach($infos as $info) : 
+                        ?>
+                        <p><?= $info['info'] ?></p>
+                        <?php endforeach ?>
                         <div class="skills-bar">
-                            <p>HTML & CSS</p>
+                        <?php
+                            $req = $bdd->query("SELECT * FROM skill");
+                            $nom = $req->fetchAll();
+                            foreach($nom as $name) :
+                        ?>
+                            <p><?= $name['nom'] ?></p>
                             <div class="progress">
-                                <div class="progress-bar" style="width: 60%">60%</div>
+                                <div class="progress-bar" style="width: <?= $name['pourcentage'] ?>" ><?= $name['pourcentage'] ?></div>
                             </div>
-
-                            <p>JAVA</p>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 50%">50%</div>
-                            </div>
-
-                            <p>C</p>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 70%">70%</div>
-                            </div>
-
-                            <p>PYTHON</p>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 35%">35%</div>
+                            <?php endforeach ?>
                             </div>
                         </div>
                     </div>
@@ -107,75 +120,39 @@
                         <div class="col-md-6">
                             <h3 class="text-center">Mes Expériences</h3>
                             <ul class="timeline">
+                            <?php
+                            $req = $bdd->query("SELECT * FROM experience");
+                            $exp = $req->fetchAll();
+                            foreach($exp as $expe) :
+                            ?>
                                 <li>
-                                    <h4><span>2015 - </span>Stage Informatique</h4>
-                                    <p>Stage effectué durant ma troisième, c'était un stage d'observation. Mes employeurs m'ont quand même laissé pratiquer.<br>
-                                        <b>Entreprise</b> - SPIE Infoservice<br>
-                                        <b>Durée</b> - 2 semaines<br>
-                                        <b>Localisation</b> - Bordeaux (Mérignac)<br>
+                                    <h4><span><?= $expe['date']?> - </span><?= $expe['nom']?></h4>
+                                    <p><?= $expe['info']?><br>
+                                        <b>Entreprise</b> - <?= $expe['entreprise']?><br>
+                                        <b>Durée</b> - <?= $expe['duree']?><br>
+                                        <b>Localisation</b> - <?= $expe['localisation']?><br>
                                     </p>
                                 </li>
-                                <li>
-                                    <h4><span>2015 - </span> Travail saisonnier</h4>
-                                    <p>Travail durant mes vacances d'été pour commencer à entrer dans le monde de travail et gagner de l'argent de poche.<br>
-                                        <b>Entreprise</b> - Château Calon Segur<br>
-                                        <b>Durée</b> - 1 mois<br>
-                                        <b>Localisation</b> - Saint Estèphe<br>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h4><span>2016 - </span> Travail saisonnier</h4>
-                                    <p>Travail durant mes vacances d'été pour gagner un peu d'argent de poche.<br>
-                                        <b>Entreprise</b> - Château Calon Segur<br>
-                                        <b>Durée</b> - 1 mois<br>
-                                        <b>Localisation</b> - Saint Estèphe<br>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h4><span>2017 - </span> Travail saisonnier</h4>
-                                    <p>Travail durant mes vacances d'été pour gagner un peu d'argent de poche.<br>
-                                        <b>Entreprise</b> - Château Calon Segur<br>
-                                        <b>Durée</b> - 1 mois<br>
-                                        <b>Localisation</b> - Saint Estèphe<br>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h4><span>2018 - </span> Travail saisonnier</h4>
-                                    <p>Travail durant mes vacances d'été pour gagner un peu d'argent de poche.<br>
-                                        <b>Entreprise</b> - Château Calon Segur<br>
-                                        <b>Durée</b> - 1 mois<br>
-                                        <b>Localisation</b> - Saint Estèphe<br>
-                                    </p>
-                                </li>
+                                <?php endforeach ?>
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h3 class="text-center">Mon parcour scolaire</h3>
+                            <h3 class="text-center">Mon parcours scolaire</h3>
                             <ul class="timeline">
+                            <?php
+                            $req = $bdd->query("SELECT * FROM parcours");
+                            $par = $req->fetchAll();
+                            foreach($par as $parc) :
+                            ?>
                                 <li>
-                                    <h4><span>2011 - 2015 - </span>Collège Les Lesques</h4>
-                                    <p>4 ans au collège pour l'optention de mon diplôme.<br>
-                                        <b>Diplôme</b> - Brevet des collèges<br>
-                                        <b>Durée</b> - 4 ans<br>
-                                        <b>Localisation</b> - Lesparre<br>
+                                    <h4><span><?= $parc['date']?> - </span><?= $parc['etablissement']?></h4>
+                                    <p><?= $parc['info']?><br>
+                                        <b>Diplôme</b> - <?= $parc['diplome']?><br>
+                                        <b>Durée</b> - <?= $parc['duree']?><br>
+                                        <b>Localisation</b> - <?= $parc['localisation']?><br>
                                     </p>
                                 </li>
-                                <li>
-                                    <h4><span>2015 - 2018 - </span>Lycée Gustave Eiffel</h4>
-                                    <p>3 ans au lycée pour obtenir mon Baccalauréat.<br>
-                                        <b>Diplôme</b> - Baccalauréat STI2D(SIN)<br>
-                                        <b>Durée</b> - 3 ans<br>
-                                        <b>Localisation</b> - Bordeaux<br>
-                                    </p>
-                                </li>
-                                <li>
-                                    <h4><span>2018 - 2019 - </span>Ynov informatique</h4>
-                                    <p>Première année à Ynov informatique pour obtenir mon Bachelor<br>
-                                        <b>Diplôme</b> - Aucun<br>
-                                        <b>Durée</b> - 1 ans<br>
-                                        <b>Localisation</b> - Bordeaux<br>
-                                    </p>
-                                </li>
+                            <?php endforeach ?>
                             </ul>
                         </div>
                     </div>
@@ -188,27 +165,19 @@
                     <h1 class="text-center">Mes Projets</h1>
                     <p class="text-center">Je suis à la réalisation de plusieurs projets, en groupe ou même seul.</p>
                     <div class="row">
+                    <?php
+                        $req = $bdd->query("SELECT * FROM projet");
+                        $pro = $req->fetchAll();
+                        foreach($pro as $proj) :
+                    ?>
                         <div class="col-md-4">
                             <div class="services-box">
-                                    <i class="fa fa-leaf"></i><span> Plante connectée</span>
-                                    <p>Un projet de plante connectée en groupe, ou le but est d'avoir un maximum d'informations sur une plante afin de la faire évoluer dans les meilleures conditions</p>
-                                    <a href="https://github.com/WhiteSlimes/Projet-UF/tree/master/Plante%20connect%C3%A9e" target="_blank">Voir le projet</a><br>
-                                    <a href="#" target="_blank">Voir le site</a>
+                                    <i class="<?= $proj['icone']?>"></i><span> <?= $proj['nom']?></span>
+                                    <p><?= $proj['info']?></p>
+                                    <a href="<?= $proj['github']?>" target="_blank"><?= $proj ['lien']?></a><br>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="services-box">
-                                <i class="fa fa-coffee"></i><span> Plugin Minecraft</span>
-                                <p>Développement d'un plugin minecraft en Java. Ce projet je le réalise seul et par pure plaisir de pratiquer du Java, un langage qui me plaît beaucoup.</p>
-                                <a href="https://github.com/WhiteSlimes/SeisanPlugin" target="_blank">Voir le projet</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="services-box">
-                                <i class="fa fa-laptop"></i><span> Site CV</span>
-                                <p>Site CV, il s'agit du site sur lequel vous vous trouvez actuellement. Le but est de créer un site avec nos comptéences et tous se que l'on trouve dans un CV. Le projet est a réalisé seul.</p>
-                            </div>
-                        </div>
+                        <?php endforeach?>
                     </div>
                 </div>
             </div>
@@ -217,15 +186,11 @@
                 <div class="container text-center">
                     <h1>Contactez-moi</h1>
                     <p class="text-center">Vous pouvez me contacter ici en remplissant le formulaire.</p>
-                    <form method="POST" action="traitement.php">
+                    <form method="POST">
                         <input type="email" name="email" id="email" placeholder="E-mail" required>
                         <textarea type="text" name="message" id="message" placeholder="Votre message" required rows="10" cols="50"></textarea>
                         <input type="submit" name="formsend" id="formsend" value="Envoyer">
                     </form>
-                    <?php
-                        if(isset($_POST['formsend']))
-                        echo "Votre message a bien été envoyer !"
-                    ?>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -241,7 +206,7 @@
                             <p>www.kujaku.fr</p>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary"><i class="fa fa-download"></i>Résumé</button>
+                    <a href="telechargement/CV.pdf" download><button type="button" class="btn btn-primary"><i class="fa fa-download"></i>Résumé</button></a>
                     <button type="button" class="btn btn-primary"><i class="fa fa-rocket"></i>Tirez moi !</button>
                 </div>
                 <div class="footer text-center">
