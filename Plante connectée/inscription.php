@@ -123,6 +123,8 @@ if(isset($_POST['forminscription']))
                 </tr>
             </table>
             <input type="submit" name="forminscription" value="S'inscrire">
+            <br>
+            <a href="connexion.php">Se connecter</a>
             </form>
             <?php
             if(isset($erreur))

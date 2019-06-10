@@ -33,6 +33,22 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
             if(isset($_SESSION['id']) AND $userinfo['id'] == $_SESSION['id'])
             {
                 ?>
+                <p>Voici la liste de vos plantes enregistrés :</p>
+                <?php
+                    $req = $bdd->query("SELECT * FROM plante");
+                    $plantes = $req->fetchAll();
+                    foreach($plantes as $plante) :
+                ?>
+                <div>
+                        <p>Nom : <?= $plante['nom']?></p>
+                        <p>Catégorie : <?= $plante['catégorie']?></p>
+                        <p>Description : <?= $plante['description']?></p>
+                        <p>Humidité : <?= $plante['humidité']?></p>
+                        <p>Température : <?= $plante['température']?></p>
+                        <p>Luminosité : <?= $plante['luminosité']?></p>
+                        <p>Période de floraison : <?= $plante['floraison']?></p>
+                </div>
+                <?php endforeach ?>
                 <br>
                 <a href="#">Ajouter une plante</a>
                 <br>
