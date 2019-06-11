@@ -19,7 +19,7 @@ if(isset($_POST['formplante']))
     $luminosite = htmlspecialchars($_POST['luminosite']);
     $floraison = htmlspecialchars($_POST['floraison']);
 
-    $insertplante = $bdd->prepare("INSERT INTO plante(nom, catégorie, description, photo, humidité, température, luminosité, floraison) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+    $insertplante = $bdd->prepare('INSERT INTO plante(nom, catégorie, description, photo, humidité, température, luminosité, floraison) VALUES(?, ?, ?, ?, ?, ?, ?, ?)');
     $insertplante->execute(array($nom, $categorie, $description, $photo, $humidite, $temperature, $luminosite, $floraison));
 }
 
@@ -79,14 +79,22 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
                     <input type="submit" name="btn-plante" value="Ajouter">
                 </form>
                 <?php
-                if(isset($_POST['btn_plante']))
+                if(isset($_POST['btn-plante']))
                 {
-                    
+                    $addplante = $bdd->prepare('INSERT INTO plante_user(plante_id, membre_id) VALUES(:plante_id, :membre_id)');
+                    $addplante->bindParam(':plante_id', $_POST['plante'], PDO::PARAM_INT);
+                    $addplante->bindParam(':membre_id', $userinfo['membre_id'], PDO::PARAM_INT);
+                    $addplante->execute();
+                    var_dump($addplante);
+                    var_dump($_POST['plante']);
+                    var_dump($userinfo['membre_id']);
                 }
+                ?>
             </div>
             <div id="trait"></div>
             <br><br><br><br>
             <div align="center">
+            <h2>Ajouter une plante à la BDD.</h2>
                 <form method="POST" action="">
                     <table>
                         <tr>
