@@ -21,10 +21,10 @@ if(isset($_POST['formconnexion']))
         if($userexist == 1)
         {
             $userinfo = $requser->fetch();
-            $_SESSION['id'] = $userinfo['id'];
+            $_SESSION['membre_id'] = $userinfo['membre_id'];
             $_SESSION['pseudo'] = $userinfo['pseudo'];
             $_SESSION['mail'] = $userinfo['mail'];
-            header("Location: profil.php?id=".$_SESSION['id']);
+            header("Location: profil.php?id=".$_SESSION['membre_id']);
         }
         else
         {
