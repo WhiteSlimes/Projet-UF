@@ -1,13 +1,5 @@
 <?php
-session_start();
-try
-{
-    $bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8', 'Kujaku', 'test');
-}
-catch (Exception $e)
-{
-         die('Erreur : ' . $e->getMessage());
-}
+include_once'db.php';
 
 if(isset($_GET['id']) AND $_GET['id'] > 0)
 {
@@ -18,20 +10,9 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
 
 ?>
 <html>
-    <head>
-        <title>Plante co</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width-device width, initial scale-1">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-    <body>
-        <div align="center">
-            <h2>Profil de <?php echo $userinfo['pseudo']; ?></h2>
+    <?php include_once 'head.php' ?>
+    <body id="green">
+    <h2 id="p-titre">Profil de <?php echo $userinfo['pseudo']; ?></h2>
             <?php
             if(isset($_SESSION['membre_id']) AND $userinfo['membre_id'] == $_SESSION['membre_id'])
             {
@@ -42,7 +23,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
-                                <a class="nav-link" href="#top">Plante</a>
+                                <a class="nav-link" href="capteur.php">Plante</a>
                                 </li>
                                 <li class="nav-item">
                                 <a class="nav-link" href="plantes.php">Les plantes</a>
@@ -54,11 +35,13 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
                         </div>
                 </nav>
             </div>
-                <a href="deconnexion.php">Déconnexion</a>
+                <div id="contenu">
+                    <a href="deconnexion.php">Déconnexion</a>
+                </div>
                 <?php
             }
             ?>
-        </div>
+
     </body>
 </html>
 <?php

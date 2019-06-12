@@ -1,13 +1,5 @@
 <?php
-session_start();
-try
-{
-    $bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8', 'Kujaku', 'test');
-}
-catch (Exception $e)
-{
-         die('Erreur : ' . $e->getMessage());
-}
+include_once'db.php';
 if(isset($_POST['formplante']))
 {
     $nom = htmlspecialchars($_POST['nom']);
@@ -33,23 +25,15 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Plante co</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width-device width, initial scale-1">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-    <body>
-        <h2>Mes infos</h2>
+    <?php include_once 'head.php' ?>
+    <body id="green">
+        <h2 id="p-titre">Mes infos</h2>
+        <div id="contenu">
         Pseudo = <?php echo $userinfo['pseudo']; ?>
         <br>
         Mail = <?php echo $userinfo['mail']; ?>
-        <h2>Mes plantes</h2>
+        </div>
+        <h2 id="p-titre">Mes plantes</h2>
         <?php
             $req = $bdd->prepare('SELECT * FROM plante_user l JOIN plante p ON l.plante_id =p.plante_id WHERE l.membre_id = :pui');
             $req->bindParam(':pui',$userinfo['membre_id'], PDO::PARAM_INT);
@@ -58,6 +42,7 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
             foreach($plante_user as $uplante) : ?>
             <div id="trait"></div>
             <h5><?= $uplante['nom']?></h5>
+            <div id="contenu">
             <img src="<?= $uplante['photo']?>" alt="">
             <p><?= $uplante['description']?></p>
             <p>Catégorie : <?= $uplante['catégorie'];?></p>
@@ -65,8 +50,10 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
             <p>Température : <?= $uplante['température'];?></p>
             <p>Luminosité : <?= $uplante['luminosité'];?></p>
             <p>Période de floraison : <?= $uplante['floraison'];?></p>
+            </div>
             <?php endforeach ?>
-            <div align="center">
+            
+            <div id="contenu">
                 <form action="" method="POST">
                     <select name="plante" id="plante">
                     <?php
@@ -76,26 +63,24 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
                         <option value="<?= $plantes['plante_id']?>"><?= $plantes['nom']?></option>
                         <?php endforeach ?>
                     </select>
-                    <input type="submit" name="btn-plante" value="Ajouter">
+                    <input type="submit" name="btnplante" value="Ajouter">
                 </form>
                 <?php
-                if(isset($_POST['btn-plante']))
+                if(isset($_POST['btnplante']))
                 {
-                    $addplante = $bdd->prepare('INSERT INTO plante_user(plante_id, membre_id) VALUES(:plante_id, :membre_id)');
-                    $addplante->bindParam(':plante_id', $_POST['plante'], PDO::PARAM_INT);
+                    $addplante = $bdd->prepare('INSERT INTO plante_user(nom, plante_id, membre_id) VALUES(:nom, :plante_id, :membre_id)');
+                    $addplante->bindParam(':nom', $plantes['nom'], PDO::PARAM_STR);
+                    $addplante->bindParam(':plante_id', $_POST['plante_id'], PDO::PARAM_INT);
                     $addplante->bindParam(':membre_id', $userinfo['membre_id'], PDO::PARAM_INT);
                     $addplante->execute();
-                    var_dump($addplante);
-                    var_dump($_POST['plante']);
-                    var_dump($userinfo['membre_id']);
                 }
                 ?>
             </div>
             <div id="trait"></div>
-            <br><br><br><br>
-            <div align="center">
-            <h2>Ajouter une plante à la BDD.</h2>
+            <h2 id="p-titre">Ajouter une plante à la BDD.</h2>
+            <div id="contenu">
                 <form method="POST" action="">
+                    <div class="menu">
                     <table>
                         <tr>
                             <td align="right">
@@ -162,10 +147,12 @@ if(isset($_GET['id']) AND $_GET['id'] > 0)
                             </td>
                         </tr>
                     </table>
+                    </div>
                     <input type="submit" name="formplante" value="Ajouter">
                 </form>
-
-                <a href="profil.php?id=<?= $userinfo['membre_id'];?>">Retour</a>
             </div>
+        <div id="contenu">
+            <a href="profil.php?id=<?= $userinfo['membre_id'];?>">Retour</a>
+        </div>
     </body>
 </html>
