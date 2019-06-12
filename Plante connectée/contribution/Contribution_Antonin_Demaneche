@@ -1,0 +1,24 @@
+# Compte Rendu UV - Antonin Demaneche #
+
+## 1 - Ce que je devais faire ##
+
+J'ai donc travailler une partie du php du site avec Alexis Papon.
+Notament : 
+- L'ajoute à la base de donnée d'une plante
+- Le fait de mettre des plantes en favoris
+- L'affichage des données du capteur en temps réel.
+
+Ce que j'ai fait tout seul : 
+- Le Diaporama 
+- Le CSS 
+
+
+## 2 - Ce que j'ai apris ##
+
+J'ai apris à utiliser d'avantage le PHP notament, à faire un systéme d'inscriptions et d'ajout à une base de donnée.
+J'ai aussi mieux compris les interractions entre un site et une base de donnée.
+
+## 3 - Ce que j'ai pas réussit ##
+
+
+Avec Alexis nous n'avons pas réussit à mettre en place un systéme de favoris de plante, malheureusement celui-ci affiche constament la derniére des plantes et ne prend le bon id.
