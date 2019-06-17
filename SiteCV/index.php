@@ -1,30 +1,7 @@
-<?php
-
-$servername = "localhost";
-$dbname = "id9838746_kujaku";
-$username = "id9838746_kujaku";
-$password = "kujaku";
-
-try {
-    $bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=UTF8", $username, $password);
-    // set the PDO error mode to exception
-    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch(PDOException $e) {echo "Connection failed: " . $e->getMessage();
-}
-?>
+<?php include_once 'db.php' ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Kujaku</title>
-        <meta name="viewport" content="width-device width, initial scale-1">
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+<?php include_once 'head.php'?>
     <body>
     <!--Header Section-->
         <section id="header">
@@ -186,11 +163,34 @@ catch(PDOException $e) {echo "Connection failed: " . $e->getMessage();
                 <div class="container text-center">
                     <h1>Contactez-moi</h1>
                     <p class="text-center">Vous pouvez me contacter ici en remplissant le formulaire.</p>
+                    <?php
+                    if(isset($_POST['formsend'])){
+                        $mail = htmlspecialchars($_POST['mail']);
+                        $message = htmlspecialchars($_POST['message']);
+
+                        $reqmessage = $bdd->prepare("INSERT INTO message(mail, message) VALUES(?, ?)");
+                        $reqmessage->execute(array($mail, $message));
+                        $info = "Votre message a bien été envoyé !";
+
+
+                    }
+                    ?>
                     <form method="POST">
-                        <input type="email" name="email" id="email" placeholder="E-mail" required>
-                        <textarea type="text" name="message" id="message" placeholder="Votre message" required rows="10" cols="50"></textarea>
-                        <input type="submit" name="formsend" id="formsend" value="Envoyer">
+                        <div class="form-group">
+                            <label for="mail">Adresse Email</label>
+                            <input type="email" class="form-control" name="mail" id="mail" placeholder="E-mail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Votre message</label>
+                            <textarea type="text" class="form-control" name="message" id="message" rows="3" placeholder="Votre message" required></textarea>
+                        </div>
+                            <input type="submit" name="formsend" id="formsend" value="Envoyer" class="btn btn-primary">
                     </form>
+                    <?php
+                    if(isset($info)){
+                        echo '<font color="green">'.$info."</font>";
+                    }
+                    ?>
 
                     <div class="row">
                         <div class="col-md-4">
@@ -203,7 +203,7 @@ catch(PDOException $e) {echo "Connection failed: " . $e->getMessage();
                         </div>
                         <div class="col-md-4">
                             <i class="fa fa-internet-explorer"></i>
-                            <p>www.kujaku.fr</p>
+                            <p>cvalexis.000webhostapp.com</p>
                         </div>
                     </div>
                     <a href="telechargement/CV.pdf" download><button type="button" class="btn btn-primary"><i class="fa fa-download"></i>Résumé</button></a>
