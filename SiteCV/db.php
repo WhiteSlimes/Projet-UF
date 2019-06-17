@@ -3,7 +3,7 @@ session_start();
 $servername = "localhost";
 $dbname = "id9838746_kujaku";
 $username = "id9838746_kujaku";
-$password = "kujaku";
+$password = "*******";
 
 try {
     $bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=UTF8", $username, $password);
